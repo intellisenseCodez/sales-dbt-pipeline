@@ -16,7 +16,9 @@ This project is centered on designing a modern, scalable data pipeline that cons
    - [Load](#️-data-transformation-layers)  
 6. [Key Terminology](#-key-terminology)  
 7. [Why DBT?](#️-why-dbt-over-raw-sql)  
-8. [Setup Instructions](#️-setup-instructions)  
+8. [Project Setup](#️-project-setup)  
+    - [Load Raw Data into S3](#1-load-raw-data-into-s3)
+    - [Snowflake Data Warehouse Setup](#2-snowflake-data-warehouse-setup)
 9. [Usage](#-usage)  
 10. [Future Improvements](#-future-improvements)  
 11. [Conclusion](#-conclusion)  
@@ -159,17 +161,26 @@ The diagram below provides a more detailed view of the transformations applied a
 | **Scalability** | Becomes harder to manage as complexity grows. | Scales with modular design and environment management. |
 
 
-## ⚙️ Setup Instructions  
+## ⚙️ Project Setup  
 
 Follow these steps to set up and run the project locally: 
 
-1. Load Raw Data into S3
+### 1. Load Raw Data into S3
 
-    - Place your ERP and CRM CSV/JSON files into an S3 bucket.
-    - Ensure the files are accessible to Snowflake via an external stage.
+- Login to AWS
+- Upload your ERP and CRM CSV/JSON files into an S3 bucket.
+- Ensure the files are accessible to Snowflake via an external stage.
 
-2. Setup Snowflake Data Warehouse
+### 2. Snowflake Data Warehouse Setup
 
-    1. Login to Snowflake
-    2. Create Warehouse, Database, and Schemas
-    3. Create Roles and Grant Access
+The following script provisions the required Snowflake objects: [Init Database](./scripts/init_database.sql)
+
+- Roles and users (for DBT transformations)
+- Warehouse, database, and schemas (Bronze, Silver, Gold layers)
+- Grants/permissions for the TRANSFORM role
+- External stage for ingesting raw ERP/CRM data from S3
+- Raw tables for Bronze layer ingestion
+- Stored procedure to automate Bronze layer loading
+
+`⚠️ Note: Replace placeholder values (<choose-a-username>, <your-s3-bucket-name>, <your-aws-key-ID>, <your-aws-secret-key>) with actual values.`
+
