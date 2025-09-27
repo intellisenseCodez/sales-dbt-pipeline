@@ -161,7 +161,23 @@ The diagram below provides a more detailed view of the transformations applied a
 | **Scalability** | Becomes harder to manage as complexity grows. | Scales with modular design and environment management. |
 
 
-## ⚙️ Project Setup  
+## ⚙️ Project Setup and Structure
+
+```bash
+.
+├── docs/                
+├── scripts/  
+│   └── init_database.sql/      # init sql to set up warehouse  
+├── models/              # DBT models (bronze, silver, gold layers)
+│   ├── bronze/  
+│   ├── silver/  
+│   └── gold/  
+├── seeds/               # Seed data (if any)  
+├── snapshots/           # DBT snapshots for SCD handling  
+├── tests/               # Custom DBT tests  
+├── dbt_project.yml      # DBT configuration file
+├── venv                        # virtual environment
+└── README.md            # Project documentation  
 
 Follow these steps to set up and run the project locally: 
 
@@ -184,3 +200,4 @@ The following script provisions the required Snowflake objects: [Init Database](
 
 `⚠️ Note: Replace placeholder values (<choose-a-username>, <your-s3-bucket-name>, <your-aws-key-ID>, <your-aws-secret-key>) with actual values.`
 
+### 3. 
