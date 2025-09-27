@@ -140,6 +140,24 @@ CREATE OR REPLACE TABLE SALES_DWH.BRONZE.ERP_PX_CAT_G1V2(
 
 
 -- Step 7: Create stored procedure to load raw data to bronze
+/*
+=======================================================================
+Stored Procedure: Load Bronze Layer (Source -> Bronze)
+=======================================================================
+Script Purpose:
+    This stored procedure loads data into the 'bronze' schema from external stage.
+    It performs the following actions:
+    - Truncates the bronze tables before loading data.
+    - Uses the `COPY INTO` command to load data from stage to bronze tables.
+
+Parameters:
+    None.
+    This stored procedure does not accept any parameters or return any values.
+
+Usage Example:
+    EXEC bronze.load_bronze_data;
+=======================================================================
+*/
 CREATE OR REPLACE PROCEDURE SALES_DWH.BRONZE.load_bronze_data()
   RETURNS STRING NOT NULL
   LANGUAGE JAVASCRIPT
