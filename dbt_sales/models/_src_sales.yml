@@ -1,0 +1,32 @@
+version: 2
+
+sources:
+  - name: src_sales # Source name for Bronze layer (Snowflake)
+    description: "Bronze layer tables loaded from CRM and ERP CSV files in Snowflake."
+    database: SALES_DWH
+    schema: BRONZE
+    tables:
+      - name: CRM_CUST_INFO
+        description: "Raw CRM customer information with demographic details."
+        columns:
+          - name: cst_id
+            description: Primary key for customers
+            tests:
+              - unique
+              - not_null
+            
+      - name: CRM_PRD_INFO
+        description: "Raw CRM product information with product attributes."
+
+      - name: CRM_SALES_DETAILS
+        description: "Raw CRM sales transaction details (orders, revenue, etc.)."
+      
+      - name: ERP_CUST_AZ12
+        description: "ERP customer dataset containing birthdate and gender."
+
+      - name: ERP_LOC_A101
+        description: "ERP location dataset with customer-country mapping."
+
+      - name: ERP_PX_CAT_G1V2
+        description: "ERP product category dataset with category and subcategory details."
+            
