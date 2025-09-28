@@ -5,7 +5,7 @@ with raw as (
 cleaned as (
     select
         prd_id::int as product_id,
-        prd_key as full_product_key,
+        prd_key::string as full_product_key,
         prd_nm as product_name,
         COALESCE(prd_cost::decimal(10,2), 0) as product_cost,
         case UPPER(TRIM(prd_line))

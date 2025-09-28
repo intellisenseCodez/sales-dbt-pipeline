@@ -5,7 +5,7 @@ with raw as (
 cleaned as (
     select
         sls_ord_num as order_number,
-        sls_prd_key as product_key,
+        sls_prd_key::string as product_key,
         sls_cust_id::int as customer_id,
         CASE 
             WHEN sls_order_dt = 0 OR LEN(sls_order_dt) != 8 THEN NULL

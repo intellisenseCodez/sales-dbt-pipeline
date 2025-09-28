@@ -7,7 +7,7 @@ ranked as (
         *,
         row_number() over (partition by cst_id order by cst_create_date desc) as flag_last -- rank records to get last
     from raw
-    where cst_id is not null
+    where cst_id is not null -- select the most recent record per customers
 ),
 cleaned as (
     select
@@ -25,9 +25,9 @@ cleaned as (
             WHEN upper(TRIM(cst_gndr)) = 'M' THEN 'MALE'
             ELSE 'n/a'
         END AS gender,
-        cast(cst_create_date as date) as created_at,
-        flag_last
+        cast(cst_create_date as date) as created_at
     from ranked
+    where flag_last = 1 -- select the most recent record per customers
 ),
 derived as (
     select
@@ -37,4 +37,3 @@ derived as (
 )
 select *
 from derived
-where flag_last = 1 -- select the most recent record per customers
