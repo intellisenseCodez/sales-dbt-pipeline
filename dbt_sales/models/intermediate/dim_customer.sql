@@ -1,7 +1,3 @@
-{{ config(
-    schema = 'GOLD'
-) }}
-
 with crm_cust as (
     select 
         customer_id,
@@ -10,7 +6,7 @@ with crm_cust as (
         last_name,
         marital_status,
         gender,
-        created_at
+        create_at
     from {{ ref('stg_crm_cust_info') }}
 ),
 erp_cust as (
@@ -39,7 +35,7 @@ joined as (
             ELSE coalesce(e.gender, 'n/a')
         END AS gender,    -- prefer CRM, fallback to ERP
         e.birth_date,
-        c.created_at
+        c.create_at
     from crm_cust c
     left join erp_cust e on c.customer_key = e.customer_id
     left join erp_loc l on c.customer_key = l.customer_id

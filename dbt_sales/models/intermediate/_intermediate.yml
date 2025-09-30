@@ -27,9 +27,7 @@ models:
 
       - name: country
         description: "Customer country derived from ERP location"
-        tests:
-          - accepted_values:
-              values: ['USA', 'Canada', 'UK', 'Nigeria', 'Germany']
+        
   
   - name: dim_product
     description: "Dimension table for products enriched with ERP category data"

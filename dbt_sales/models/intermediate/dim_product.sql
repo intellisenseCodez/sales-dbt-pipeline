@@ -1,7 +1,3 @@
-{{ config(
-    schema = 'GOLD'
-) }}
-
 with crm_prd as (
     select
         product_id,

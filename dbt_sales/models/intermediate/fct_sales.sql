@@ -1,7 +1,3 @@
-{{ config(
-    schema = 'GOLD',
-) }}
-
 with sales as (
     select 
         order_number,
@@ -15,7 +11,6 @@ with sales as (
         unit_price
     from {{ ref('stg_crm_sales_details') }}
 ),
-
 dim_prod as (
     select
         product_key,
@@ -24,7 +19,6 @@ dim_prod as (
         category_id
     from {{ ref('dim_product') }}
 ),
-
 dim_cust as (
     select
         customer_id,
@@ -37,7 +31,6 @@ dim_cust as (
         birth_date
     from {{ ref('dim_customer') }}
 ),
-
 enriched as (
     select
         row_number() over (
@@ -72,6 +65,5 @@ enriched as (
     left join dim_prod p on s.product_key = p.product_key
     left join dim_cust c on s.customer_id = c.customer_id
 )
-
 select *
 from enriched

@@ -35,6 +35,8 @@ models:
     staging:
       +materialized: table
     intermediate:
-      +materialized: view
+      +schema: GOLD
+      +materialized: table
     marts:
+      +schema: GOLD
       +materialized: view

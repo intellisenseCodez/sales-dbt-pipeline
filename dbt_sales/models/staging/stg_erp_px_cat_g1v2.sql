@@ -1,8 +1,14 @@
 with raw as (
+    /*
+    Step 1: Load raw ERP Products data from the Bronze layer
+    */
     select * 
     from {{ source('src_sales', 'ERP_PX_CAT_G1V2') }}
 ),
-cleaned as (
+renamed as (
+    /*
+    Step 2: Apply business-friendly column names
+    */
     select
         id as product_id,
         cat as category,
@@ -10,11 +16,14 @@ cleaned as (
         maintenace as maintenance_flag
     from raw
 ),
-derived as (
+metadata as (
+    /*
+    Step 3: Add metadata for auditing and traceability
+    */
     select
         *,
         current_timestamp() as dwh_create_date
-    from cleaned
+    from renamed
 )
 select *
-from derived
+from metadata
