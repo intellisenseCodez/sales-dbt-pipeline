@@ -16,57 +16,71 @@ This project is centered on designing a modern, scalable data pipeline that cons
    - [Load](#️-data-transformation-layers)  
 6. [Key Terminology](#-key-terminology)  
 7. [Why DBT?](#️-why-dbt-over-raw-sql)  
-8. [Project Setup](#️-project-setup)  
+8. [Project Setup and Requirements](#-project-setup-and-requirements)  
+    - [Repository Structure](#-repository-structure)
     - [Load Raw Data into S3](#1-load-raw-data-into-s3)
     - [Snowflake Data Warehouse Setup](#2-snowflake-data-warehouse-setup)
+    - [Data Flow (Data Lineage)](#3--data-flow-data-lineage)
+    - [Data Integration](#4--data-integration-how-tables-are-related)
+    - [DBT Models](#5-creating-dbt-models-bronze--staging)
 9. [Usage](#-usage)  
 10. [Future Improvements](#-future-improvements)  
 11. [Conclusion](#-conclusion)  
 
 ## 📌 Project Overview  
-This project demonstrates how to design and implement a **modern, scalable data warehouse** by leveraging the **Medallion Architecture (Bronze, Silver, Gold layers)** with **Snowflake** as the data warehouse, **Amazon S3** as the data lake storage, and **DBT (Data Build Tool)** for transformation and orchestration.  
+This project demonstrates how to design, implement and transform a **modern, scalable data warehouse** by leveraging the **Medallion Architecture (Bronze, Silver, Gold layers)** with **Snowflake** as the data warehouse, **Amazon S3** as the data lake storage, and **DBT (Data Build Tool)** for transformation and orchestration.  
 
-The solution follows an **ETL approach** that ingests raw data from **ERP** and **CRM sources**, stores it in an S3 bucket, and then pipelines it into **Snowflake** for transformation and reporting.  
+This solution follows an **ETL approach** that ingests raw data from an **Enterprise Resource Planning** (ERP) and **Customer Relationship Management** (CRM) source, stores it in an **S3 bucket**, and then pipelines it into **Snowflake** for transformation using Data Build Tool (DBT) and Visualization and Reportin using PowerBI Tool.  
 
 By applying the **Medallion Architecture**, data flows through structured stages (Bronze → Silver → Gold), ensuring data quality, scalability, and analytical readiness.  
 
 ## 👉 **Inspiration:**  
 
-This project was inspired by the YouTube content by *Data with Baraa* titled:  
-[**“SQL Data Warehouse from Scratch | Full Hands-On Data Engineering Project.”**](https://youtu.be/9GVqKuTVANE)  
+This project was inspired by the YouTube content by *Data with Baraa* titled: [**“SQL Data Warehouse from Scratch | Full Hands-On Data Engineering Project”**](https://youtu.be/9GVqKuTVANE).
 
 While the original project used raw SQL for data transformations, I decided to **recreate and enhance it using DBT** to take advantage of modern data engineering best practices.  
 
-Unlike traditional raw SQL development, this project leverages **DBT** to manage transformations in a modular, reusable, and version-controlled way. 
+Unlike traditional raw SQL development, this project leverages **DBT** to manage transformations in a `modular`, `reusable`, and `version-controlled` way. 
 
 
 ## 🔍 As-Is vs To-Be  
 
 ### ❌ As-Is (Current Challenges)  
-- Data pipelines are **heavily dependent on raw SQL scripts** that are hard to maintain.  
+- The Data Warehouse is currently built on **SQL Server Express** with **SQL Server Management Studio (SSMS)** for database management and interaction.
+- Data pipelines are **heavily dependent on raw SQL scripts** making them difficult to maintain and scale.
 - Lack of **version control and collaboration** – SQL code is often scattered across scripts and environments.  
 - **Data quality issues** due to limited testing and validation of transformations.  
-- No clear **data lineage**, making it difficult to trace where numbers in reports come from.  
+- **Data lineage tracking is manual**, using external tools, which slows down reporting and reduces transparency.
 - Manual and repetitive ETL processes that are **time-consuming** and prone to human error.  
 
-### ✅ To-Be (Future State with DBT + Snowflake + Medallion)  
-- **DBT-based modular pipelines** ensure reusable, maintainable, and scalable transformations.  
-- All transformations are **version-controlled in Git**, enabling team collaboration and CI/CD workflows.  
-- **Built-in testing and documentation** in DBT ensures high-quality, trustworthy datasets.  
-- **Data lineage visibility** through DBT docs makes debugging and governance easier.  
-- **Medallion Architecture (Bronze → Silver → Gold)** standardizes data layers for raw, cleaned, and business-ready data.  
-- Snowflake provides **scalability, performance, and security** for handling large datasets efficiently.  
+
+### ✅ To-Be (Future State with Snowflake + dbt + Medallion Architecture)
+- The data platform is built on **Snowflake**, providing **scalability, elasticity, and cost efficiency** for handling structured and semi-structured data.  
+- **dbt (Data Build Tool)** is adopted for modular SQL-based transformations, enabling **clean, maintainable, and reusable code**.  
+- All transformations follow the **Medallion Architecture (Bronze, Silver, Gold)** to ensure a clear separation of raw data, cleansed/validated data, and business-ready marts.  
+- **Version control (Git)** ensures collaboration, code reviews, and proper change management across teams.  
+- Built-in **dbt tests (generic + custom)** provide automated **data quality checks** (e.g., uniqueness, null handling, referential integrity).  
+- **Automated data lineage** and documentation are generated directly from dbt, ensuring **end-to-end visibility** of data flows.  
+- ETL processes are **automated and orchestrated** (via dbt Cloud, Airflow, or similar), reducing manual effort and human error.  
+- Enables faster **time-to-insight** with reliable, trusted data that supports analytics, dashboards, and reporting.  
+
 
 ## 📊 High Level Data Architecture & Data Management Techniques Adopted  
 
-![Data Architecture](./docs/data_architecture.png)
+The data architecture for this project follows Medallion Architecture **Bronze**, **Silver**, and **Gold** layers:
+
+1. **Bronze Layer**: Stores raw data as-is from the source systems. Data is ingested from S3 bucket into Snowflake.
+2. **Silver Layer**: This layer includes data cleansing, standardization, and normalization processes to prepare data for analysis.
+3. **Gold Layer**: Houses business-ready data modeled into a star schema required for reporting and analytics.
+
+![Data Architecture](./docs/data_architecture.jpg)
 
 To ensure clean, reliable, and business-ready data, the following **data management techniques** were applied in this project:  
 
 ### 🔹 Extraction  
 - Descriptions
-    - Source files from ERP and CRM systems are ingested into an **Amazon S3 bucket**.  
-    - Snowflake’s external stage reads the data directly from S3.  
+    - Files from ERP and CRM systems are first landed in an **Amazon S3 bucket**.  
+    - Using **Snowflake external stages**, the data is read directly from S3 and loaded into the **Bronze layer tables**.  
 - Methods
     - **Extraction Methods: Pull extraction** – Data is pulled directly from source systems into the pipeline at scheduled intervals.  
     - **Extract Type: Full extraction** – Each run retrieves the complete dataset rather than incremental changes, ensuring consistency with the source.  
@@ -74,7 +88,7 @@ To ensure clean, reliable, and business-ready data, the following **data managem
 
 ### 🔹 Transformation 
 - Descriptions 
-    The transformation layer ensures raw data is standardized, cleaned, and enriched for business use.  
+    - The transformation layer ensures raw data is standardized, cleaned, and enriched for business use.  
     - DBT models apply **cleaning, deduplication, standardization, and aggregations**.  
     - Jinja templates, macros, and DBT testing ensure accuracy and maintainability. 
 - Methods
@@ -95,10 +109,20 @@ To ensure clean, reliable, and business-ready data, the following **data managem
 
 ### 🔹 Load 
 - Descriptions:
-    - Transformed data is loaded into Snowflake **Silver** and **Gold** schema tables for analytics.
+    - Transformed data in the Snowflake **Silver Layer** is loaded into the **Gold Layer** schema tables for analytics.
 - Methods: 
     - **Processing Type: Batch processing** – Data is processed in scheduled batches rather than real time.  
-    - **Load Methods: Full Load (Drop, Create, Insert)** – Destination tables are recreated during each load cycle to reflect the latest state of the source.  
+    - **Load Methods:**
+    - **Full Rebuild (Create or Replace)**  
+        - Using the `table` materialization, dbt will **drop and recreate** the table on each run.  
+        - Ensures the table always reflects the **latest full snapshot** of the source data.  
+        - Best for smaller datasets or when historical data is not required.  
+
+    - **Incremental Load (Insert or Update)**  
+        - Using the `incremental` materialization, dbt will only **insert new records** or **update changed ones** based on a defined unique key and conditions.  
+        - More efficient for large datasets where only a subset of data changes over time.  
+        - Requires careful definition of the `is_incremental()` logic to prevent duplicates. 
+
     - **Slowly Changing Dimensions (SCD): Type 1 (Overwrite)** – Updates overwrite existing records, ensuring only the latest values are stored.  
 
 
@@ -161,31 +185,65 @@ The diagram below provides a more detailed view of the transformations applied a
 | **Scalability** | Becomes harder to manage as complexity grows. | Scales with modular design and environment management. |
 
 
-## ⚙️ Project Setup and Structure
+## 🚀 Project Setup and Requirements
+
+### Building the Data Warehouse (Data Engineering)
+
+### 🎯 Objective
+Build a modern, cloud-based data warehouse using **Snowflake** for storage and compute, with **dbt** as the transformation framework. The goal is to consolidate sales data into a unified model that powers analytical reporting and data-driven decision-making.
+
+### 📌 Project Specifications
+- **Data Sources:** Ingest sales data from ERP and CRM systems delivered as CSV files.  
+- **Data Quality:** Standardize, cleanse, and validate data to address inconsistencies before analytics.  
+- **Data Integration:** Merge ERP and CRM datasets into a single, well-structured data model optimized for business queries.  
+- **Scope:** Deliver insights based on the most recent dataset (no historization required).  
+- **Documentation:** Use dbt’s built-in documentation and lineage features to provide clear visibility for both business users and analytics teams.  
+
+### 📂 Repository Structure
 
 ```bash
-.
-├── docs/                
+sales-dbt-pipeline/
+│
+├── datasets/                           # Raw datasets used for the project (ERP and CRM data)
+│        
+├── dbt_sales/                             # DBT project
+│   ├── analyses/  
+│   ├── dbt_internal_packages/  
+│   ├── logs/  
+│   ├── macros/  
+│   ├── models/  
+│   ├── seeds/  
+│   ├── snapshots/                      # DBT snapshots for SCD handling 
+│   ├── targets/ 
+│   ├── tests/                          # Custom DBT tests 
+│   └── dbt_project.yml                 # DBT configuration file
+│        
+├── docs/                               # Project documentation and architecture details
+│   ├── etl.drawio                      # Draw.io file shows all different techniquies and methods of ETL
+│   ├── data_architecture.drawio        # Draw.io file shows the project's architecture
+│   ├── data_catalog.md                 # Catalog of datasets, including field descriptions and metadata
+│   ├── data_flow.drawio                # Draw.io file for the data flow diagram
+│   ├── data_models.drawio              # Draw.io file for data models (star schema)
+│   ├── naming-conventions.md           # Consistent naming guidelines for tables, columns, and files   
+│   
+├── logs/  
 ├── scripts/  
-│   └── init_database.sql/      # init sql to set up warehouse  
-├── models/              # DBT models (bronze, silver, gold layers)
-│   ├── bronze/  
-│   ├── silver/  
-│   └── gold/  
-├── seeds/               # Seed data (if any)  
-├── snapshots/           # DBT snapshots for SCD handling  
-├── tests/               # Custom DBT tests  
-├── dbt_project.yml      # DBT configuration file
-├── venv                        # virtual environment
-└── README.md            # Project documentation  
+│   └── init_database.sql/              # init sql to set up warehouse 
+├── venv                                # virtual environment
+├── .gitignore                          # Files and directories to be ignored by Git
+├── LICENSE                             # License information for the repository
+├── README.md                           # Project overview and instructions
+└── requirements.txt                    # Dependencies and requirements for the project
+```
 
-Follow these steps to set up and run the project locally: 
+### 1. Ingest Raw Data into S3
 
-### 1. Load Raw Data into S3
+- Sign in to your AWS account.
 
-- Login to AWS
-- Upload your ERP and CRM CSV/JSON files into an S3 bucket.
-- Ensure the files are accessible to Snowflake via an external stage.
+- Place the ERP and CRM source files (CSV/JSON) into a designated S3 bucket.
+
+- Configure the bucket permissions so Snowflake can access the files through an external stage.
+
 
 ### 2. Snowflake Data Warehouse Setup
 
@@ -200,4 +258,115 @@ The following script provisions the required Snowflake objects: [Init Database](
 
 `⚠️ Note: Replace placeholder values (<choose-a-username>, <your-s3-bucket-name>, <your-aws-key-ID>, <your-aws-secret-key>) with actual values.`
 
-### 3. 
+### 3. 🔄 Data Flow (Data Lineage)
+
+![Data Flow Diagram](./docs/data_flow.png)
+
+The data pipeline follows a **Medallion Architecture** (Bronze → Silver → Gold) implemented in **Snowflake + dbt**:
+
+1. **Sources (ERP & CRM)**  
+   - Raw data files (CSV/JSON) from ERP and CRM systems are stored in an **Amazon S3 bucket**.  
+   - Snowflake external stages are used to read and load the files.  
+
+2. **Bronze Layer (Raw Landing Zone)**  
+   - Data is ingested into Snowflake tables with no transformations.  
+   - Example tables: `crm_sales_details`, `crm_cust_info`, `erp_cust_az12`, etc.  
+
+3. **Silver Layer (Staging / Cleansed Zone)**  
+   - Data from Bronze is standardized, cleaned, and conformed using **dbt models**.  
+   - Example models: `stg_crm_sales_details`, `stg_crm_cust_info`, `stg_erp_loc_a101`, etc.  
+   - Handles tasks such as data type casting, normalization, deduplication, and enrichment.  
+
+4. **Gold Layer (Business-Ready Models)**  
+   - Final analytics-ready data marts are created.  
+   - Includes fact and dimension models such as:  
+     - `fact_sales` (sales transactions)  
+     - `dim_customers` (customer master data)  
+     - `dim_products` (product master data)  
+   - Optimized for BI, reporting, and advanced analytics.  
+
+
+### 4. 🔗 Data Integration (How Tables Are Related)
+
+![Data Integration](./docs/data_integration.png)
+
+The integration layer brings together **CRM** and **ERP** data sources into a unified model.  
+
+- **CRM System** provides:
+  - `crm_sales_details` → transactional sales and order records (linked by `prd_key`, `cst_id`).  
+  - `crm_prd_info` → current and historical product information.  
+  - `crm_cust_info` → customer master data.  
+
+- **ERP System** provides:  
+  - `erp_px_cat_g1v2` → product categories.  
+  - `erp_cust_az12` → additional customer attributes (e.g., birthdate).  
+  - `erp_loc_a101` → customer location details (e.g., country).  
+
+These tables are linked through **shared keys** (`prd_key`, `cst_id`, `cid`) to enable:  
+- Consolidated **customer information** from both CRM and ERP.  
+- Enriched **product details** with categories.  
+- A complete **sales fact table** connecting customers and products.  
+
+
+### 5. Creating DBT Models (Bronze → Staging)
+
+After loading the raw ERP and CRM datasets into the **Bronze layer**, the next step was to transform them into a structured **Staging layer** using **DBT models**.  
+
+#### Steps Followed:
+
+1. **Initialize DBT Project**  
+   - Ran `dbt init` to create the project folder structure.  
+   - Configured the `profiles.yml` file to connect DBT with **Snowflake** (using the `COMPUTE_WH` warehouse and target schema).  
+
+2. **Set Up Source Definitions**  
+   - Defined all raw tables (`erp_*` and `crm_*`) in `src.yml` files under the `/models/sources/` directory.  
+   - Example:  
+     ```yaml
+     version: 2
+     sources:
+       - name: bronze
+         schema: bronze
+         tables:
+           - name: crm_sales_details
+           - name: crm_prd_info
+           - name: crm_cust_info
+           - name: erp_px_cat_g1v2
+           - name: erp_cust_az12
+           - name: erp_loc_a101
+     ```
+3. **Create Staging Models**  
+   - Built **staging models** in `/models/staging/` to clean and standardize raw data.  
+   - Applied **renaming conventions**, **casting data types**, and **handling nulls**.  
+   - Example model (`stg_crm_sales_details.sql`):  
+     ```sql
+     with source as (
+         select * from {{ source('bronze', 'crm_sales_details') }}
+     ),
+     renamed as (
+         select
+             order_id,
+             cst_id as customer_id,
+             prd_key as product_key,
+             cast(order_date as date) as order_date,
+             cast(sales_amount as numeric) as sales_amount
+         from source
+     )
+     select * from renamed
+     ```
+
+4. **Use Materializations**  
+   - Applied **`view` materialization** for staging models since they primarily serve as **cleaned representations** of raw tables.  
+   - This approach keeps transformations **lightweight and reusable** for downstream layers.  
+
+5. **Testing & Documentation**  
+   - Added **schema tests** (e.g., `not_null`, `unique`, `accepted_values`) for critical columns like `order_id`, `customer_id`, and `product_key`.  
+   - Wrote **descriptions** for each staging model in YAML for clarity.  
+
+
+✅ **Result:**  
+The **Staging layer** now contains clean, consistent, and standardized versions of CRM and ERP data, making it easier to integrate into the **Integration (Silver) layer** and build business-ready fact and dimension tables in the **Gold layer**.
+
+
+
+### 🛡️ License
+This project is licensed under the MIT License. You are free to use, modify, and share this project with proper attribution.

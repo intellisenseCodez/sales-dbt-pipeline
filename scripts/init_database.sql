@@ -85,7 +85,15 @@ ALTER STAGE SALES_DWH.BRONZE.SALES_STAGE REFRESH;
 
 
 
--- Step 7: Define Raw Data into Tables
+-- Step 7: Create DDL to define Database Tables
+/*
+=======================================================================
+ Create DDL to define Database Tables
+=======================================================================
+- Data Completeness and schema check,
+- Data ingestion from S3 to Bronze Layer
+=======================================================================
+*/
 
 CREATE OR REPLACE TABLE SALES_DWH.BRONZE.CRM_CUST_INFO(
     cst_id INT,
@@ -139,7 +147,7 @@ CREATE OR REPLACE TABLE SALES_DWH.BRONZE.ERP_PX_CAT_G1V2(
 );
 
 
--- Step 7: Create stored procedure to load raw data to bronze
+-- Step 8: Create stored procedure to load raw data to bronze
 /*
 =======================================================================
 Stored Procedure: Load Bronze Layer (Source -> Bronze)
@@ -155,7 +163,7 @@ Parameters:
     This stored procedure does not accept any parameters or return any values.
 
 Usage Example:
-    EXEC bronze.load_bronze_data;
+    EXEC SALES_DWH.BRONZE.load_bronze_data();
 =======================================================================
 */
 CREATE OR REPLACE PROCEDURE SALES_DWH.BRONZE.load_bronze_data()
