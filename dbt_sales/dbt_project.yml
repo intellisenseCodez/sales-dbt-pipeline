@@ -35,8 +35,13 @@ models:
     staging:
       +materialized: table
     intermediate:
-      +schema: GOLD
+      +schema: gold
       +materialized: table
     marts:
-      +schema: GOLD
-      +materialized: view
+      finance:
+        +schema: finance
+        +materialized: view
+      sales:
+        +schema: sales
+        +materialized: view
+
