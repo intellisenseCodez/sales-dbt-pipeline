@@ -31,13 +31,13 @@ cleaned as (
         TRIM(cst_firstname) as cst_first_name,
         TRIM(cst_lastname) as cst_last_name,
         CASE
-            WHEN UPPER(TRIM(cst_marital_status)) = 'S' THEN 'SINGLE'
-            WHEN UPPER(TRIM(cst_marital_status)) = 'M' THEN 'MARRIED'
+            WHEN UPPER(TRIM(cst_marital_status)) = 'S' THEN 'Single'
+            WHEN UPPER(TRIM(cst_marital_status)) = 'M' THEN 'Married'
             ELSE 'n/a'
         END AS cst_marital_status,
         CASE
-            WHEN UPPER(TRIM(cst_gndr)) = 'F' THEN 'FEMALE'
-            WHEN UPPER(TRIM(cst_gndr)) = 'M' THEN 'MALE'
+            WHEN UPPER(TRIM(cst_gndr)) = 'F' THEN 'Female'
+            WHEN UPPER(TRIM(cst_gndr)) = 'M' THEN 'Male'
             ELSE 'n/a'
         END AS cst_gndr,
         cast(cst_create_date as date) as cst_create_date

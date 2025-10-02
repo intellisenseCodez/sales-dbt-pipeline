@@ -8,6 +8,15 @@ models:
         tests:
           - not_null # check for nulls
           - unique # check for duplicates
+      - name: customer_key
+        tests:
+          - not_null
+          - unique
+      - name: marital_status
+        tests:
+          - accepted_values: 
+              arguments:
+                values: ['Married', 'Single', 'n/a']
 
   - name: stg_crm_prd_info
     description: "Staging model for CRM sales details with cleaned and typed fields."
@@ -16,6 +25,7 @@ models:
         description: "Unique order identifier"
         tests:
           - not_null
+
       - name: product_key
         description: "Foreign key to product dimension"
         tests:
@@ -68,9 +78,19 @@ models:
 
   - name: stg_crm_sales_details
     description: "Staging model for CRM sales transactions."
+    columns:
+      - name: sales_amount
+       
 
   - name: stg_erp_cust_az12
     description: "Staging model for ERP customer demographics."
+    columns:
+      - name: gender
+        tests:
+          - accepted_values: 
+              arguments:
+                values: ['Male', 'Female', "n/a"]
+
 
   - name: stg_erp_loc_a101
     description: "Staging model for ERP customer locations."
