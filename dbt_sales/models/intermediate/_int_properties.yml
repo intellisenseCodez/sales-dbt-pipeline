@@ -1,0 +1,57 @@
+version: 2
+
+models:
+  - name: dim_customer
+    description: "Intermediate customer dimension combining CRM, ERP customer, and ERP location data"
+    columns:
+      - name: customer_id
+        description: "Unique customer identifier"
+        tests:
+          - not_null
+          - unique
+
+      - name: customer_key
+        description: "Customer natural/business key from CRM"
+        tests:
+          - not_null
+
+      - name: first_name
+        description: "Customer first name"
+        tests:
+          - not_null
+
+      - name: last_name
+        description: "Customer last name"
+        tests:
+          - not_null
+
+      - name: country
+        description: "Customer country derived from ERP location"
+        
+  
+  - name: dim_product
+    description: "Dimension table for products enriched with ERP category data"
+    columns:
+      - name: product_sk
+        description: "Surrogate key for product dimension"
+        tests:
+          - not_null
+          - unique
+
+      - name: product_key
+        description: "Business key for product"
+        tests:
+          - not_null
+          - unique
+
+      - name: product_name
+        description: "Cleaned product name from CRM"
+        tests:
+          - not_null
+
+      - name: category_name
+        description: "Category from ERP system"
+      - name: subcategory_name
+        description: "Sub-category from ERP system"
+      - name: product_cost
+        description: "Cost of product, defaults to 0 if null"

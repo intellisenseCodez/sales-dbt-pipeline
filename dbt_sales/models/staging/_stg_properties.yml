@@ -1,0 +1,99 @@
+version: 2
+
+models:
+  - name: stg_crm_cust_info
+    description: "Staging model for CRM customer info."
+    columns:
+      - name: customer_id
+        tests:
+          - not_null # check for nulls
+          - unique # check for duplicates
+      - name: customer_key
+        tests:
+          - not_null
+          - unique
+      - name: marital_status
+        tests:
+          - accepted_values: 
+              arguments:
+                values: ['Married', 'Single', 'n/a']
+
+  - name: stg_crm_prd_info
+    description: "Staging model for CRM sales details with cleaned and typed fields."
+    columns:
+      - name: order_number
+        description: "Unique order identifier"
+        tests:
+          - not_null
+
+      - name: product_key
+        description: "Foreign key to product dimension"
+        tests:
+          - not_null
+
+      - name: customer_id
+        description: "Foreign key to customer dimension"
+        tests:
+          - not_null
+
+      - name: order_date
+        description: "Order date, parsed from YYYYMMDD or NULL if invalid"
+        tests:
+          - not_null
+
+      - name: ship_date
+        description: "Shipping date, parsed from YYYYMMDD or NULL if invalid"
+        # tests:
+          # - dbt_utils.accepted_range:
+          #     min_value: '2000-01-01'
+          #     max_value: '2030-12-31'
+
+      - name: due_date
+        description: "Due date, parsed from YYYYMMDD or NULL if invalid"
+        # tests:
+        #   - dbt_utils.accepted_range:
+        #       min_value: '2000-01-01'
+        #       max_value: '2030-12-31'
+
+      - name: sales_amount
+        description: "Total sales amount for this line"
+        tests:
+          - not_null
+          # - dbt_utils.expression_is_true:
+          #     expression: "sales_amount >= 0"
+
+      - name: quantity
+        description: "Quantity of items sold"
+        tests:
+          - not_null
+          # - dbt_utils.expression_is_true:
+          #     expression: "quantity > 0"
+
+      - name: unit_price
+        description: "Unit price of the product"
+        tests:
+          - not_null
+          # - dbt_utils.expression_is_true:
+          #     expression: "unit_price >= 0"
+
+  - name: stg_crm_sales_details
+    description: "Staging model for CRM sales transactions."
+    columns:
+      - name: sales_amount
+       
+
+  - name: stg_erp_cust_az12
+    description: "Staging model for ERP customer demographics."
+    columns:
+      - name: gender
+        tests:
+          - accepted_values: 
+              arguments:
+                values: ['Male', 'Female', "n/a"]
+
+
+  - name: stg_erp_loc_a101
+    description: "Staging model for ERP customer locations."
+
+  - name: stg_erp_px_cat_g1v2
+    description: "Staging model for ERP product categories."
