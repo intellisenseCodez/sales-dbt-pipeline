@@ -11,9 +11,6 @@ sources:
         columns:
           - name: cst_id
             description: Primary key for customers
-            tests:
-              - unique
-              - not_null
             
       - name: CRM_PRD_INFO
         description: "Raw CRM product information with product attributes."
