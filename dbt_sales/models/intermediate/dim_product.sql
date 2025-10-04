@@ -9,7 +9,7 @@ with crm_prd as (
         product_start_date,
         product_end_date
     from {{ ref('stg_crm_prd_info') }}
-    where product_end_date is null -- filter out all historical data
+    where product_end_date is not null -- filter out all historical data
 ),
 erp_cat as (
     select
