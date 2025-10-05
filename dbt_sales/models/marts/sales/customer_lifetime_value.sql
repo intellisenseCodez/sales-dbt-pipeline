@@ -14,7 +14,6 @@ customers as (
 )
 
 select
-    c.customer_id,
     c.customer_key,
     c.first_name,
     c.last_name,
@@ -28,8 +27,8 @@ select
     max(s.order_date) as last_purchase_date,
     datediff(day, min(s.order_date), max(s.order_date)) as customer_span_days
 from sales s
-join customers c on s.customer_id = c.customer_id
+join customers c on s.customer_key = c.customer_key
 group by 
-    c.customer_id, c.customer_key, c.first_name, c.last_name, 
+    c.customer_key, c.first_name, c.last_name, 
     c.country, c.gender
 order by total_revenue desc

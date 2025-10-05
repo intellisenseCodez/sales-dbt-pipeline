@@ -1,5 +1,3 @@
-{{ config(materialized='table', schema='gold') }}
-
 with sales as (
     select * from {{ ref('fct_sales') }}
 ),
@@ -14,7 +12,7 @@ products as (
 )
 
 select
-    c.customer_id,
+    c.customer_key,
     c.first_name,
     c.last_name,
     c.country,
@@ -25,7 +23,7 @@ select
          then round((sum(s.sales_amount) - sum(s.quantity * p.product_cost)) / sum(s.sales_amount) * 100, 2)
          else 0 end as profit_margin_pct
 from sales s
-join customers c on s.customer_id = c.customer_id
+join customers c on s.customer_key = c.customer_key
 join products p on s.product_key = p.product_key
-group by c.customer_id, c.first_name, c.last_name, c.country
+group by c.customer_key, c.first_name, c.last_name, c.country
 order by total_profit desc

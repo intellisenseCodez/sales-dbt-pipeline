@@ -16,7 +16,7 @@ cleaned as (
     - Normalize gender values:
         * Map 'F' or 'FEMALE' → 'Female'
         * Map 'M' or 'MALE' → 'Male'
-        * Any other or missing value → 'n/a'
+        * Any other or missing value → 'n/a' 
     */
     select
         CASE
