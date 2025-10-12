@@ -23,7 +23,7 @@ This project is centered on designing a modern, scalable data pipeline that cons
     - [Data Flow (Data Lineage)](#3--data-flow-data-lineage)
     - [Data Integration](#4--data-integration-how-tables-are-related)
     - [DBT Models](#5-creating-dbt-models-bronze--staging)
-9. [Usage](#-usage)  
+9. [PowerBI Reporting]()  
 10. [Future Improvements](#-future-improvements)  
 11. [Conclusion](#-conclusion)  
 
