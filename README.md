@@ -23,9 +23,9 @@ This project is centered on designing a modern, scalable data pipeline that cons
     - [Data Flow (Data Lineage)](#3--data-flow-data-lineage)
     - [Data Integration](#4--data-integration-how-tables-are-related)
     - [DBT Models](#5-creating-dbt-models-bronze--staging)
-9. [Usage](#-usage)  
-10. [Future Improvements](#-future-improvements)  
-11. [Conclusion](#-conclusion)  
+9. [Reporting](#-sales-performance-analysis-report)  
+10. [Contributors](#-contributors)  
+11. [License](#️-license)  
 
 ## 📌 Project Overview  
 This project demonstrates how to design, implement and transform a **modern, scalable data warehouse** by leveraging the **Medallion Architecture (Bronze, Silver, Gold layers)** with **Snowflake** as the data warehouse, **Amazon S3** as the data lake storage, and **DBT (Data Build Tool)** for transformation and orchestration.  
@@ -367,11 +367,20 @@ After loading the raw ERP and CRM datasets into the **Bronze layer**, the next s
 The **Staging layer** now contains clean, consistent, and standardized versions of CRM and ERP data, making it easier to integrate into the **Integration (Silver) layer** and build business-ready fact and dimension tables in the **Gold layer**.
 
 ## 📊 Sales Performance Analysis Report
+
 ### Project Overview
 
 The Sales Performance Analysis Dashboard was developed using Power BI to provide a comprehensive view of sales activities and customer insights.
 
 The goal of this report is to enable management to monitor performance, evaluate profit trends, and identify business growth opportunities across different product categories and regions.
+
+### Tools & Technologies
+
+- Power BI – Data modeling, visualization, DAX calculations
+
+- Data Modeling Approach: Star Schema
+
+- DAX Functions Used: SUMX, DIVIDE, DISTINCTCOUNT, RELATED
 
 ### Data Model Design
 
@@ -379,36 +388,35 @@ The goal of this report is to enable management to monitor performance, evaluate
 
 The data model follows a Star Schema structure consisting of:
 
-**Fact Table**: FCT_SALES – contains key measurable metrics such as Sales_Amount, Quantity, Product_Key, and Customer_Key.
+- **Fact Table**: FCT_SALES – contains key measurable metrics such as Sales_Amount, Quantity, Product_Key, and Customer_Key.
 
-### Dimension Tables:
+- **Dimension Tables**:
 
-**DIM_PRODUCT** – defines product attributes including Category, Product_Line, and Product_Name.
+    - **DIM_PRODUCT** – defines product attributes including Category, Product_Line, and Product_Name.
 
-**DIM_CUSTOMER** – stores customer details such as Gender, Marital Status, Country, and Customer_ID.
+    - **DIM_CUSTOMER** – stores customer details such as Gender, Marital Status, Country, and Customer_ID.
 
-Relationships were established using Product_Key and Customer_Key, ensuring an optimized model for efficient aggregation and filtering.
+Relationships were established using `Product_Key` and `Customer_Key`, ensuring an optimized model for efficient aggregation and filtering.
 
 ### Key Metrics and DAX Measures
 
-The following KPIs were created using DAX:
+The following **KPIs** were created using **DAX**:
 
-**Total Sales**: SUM(FCT_SALES[Sales_Amount])
+- **Total Sales**: SUM(FCT_SALES[Sales_Amount])
 
-**Total Quantity**: SUM(FCT_SALES[Quantity])
+- **Total Quantity**: SUM(FCT_SALES[Quantity])
 
-**Total Unit Price**: DIVIDE([Total Sales], [Total Quantity])
+- **Total Unit Price**: DIVIDE([Total Sales], [Total Quantity])
 
-**Total Customers**: DISTINCTCOUNT(DIM_CUSTOMER[Customer_ID])
+- **Total Customers**: DISTINCTCOUNT(DIM_CUSTOMER[Customer_ID])
 
-**Profit**: [Total Sales] - SUM(DIM_PRODUCT[Product_Cost])
+- **Profit**: [Total Sales] - SUM(DIM_PRODUCT[Product_Cost])
 
-**Profit Margin (%)**: DIVIDE([Profit], [Total Sales], 0)
+- **Profit Margin (%)**: DIVIDE([Profit], [Total Sales], 0)
 
 These measures help management understand overall business performance and profitability.
 
 ### Dashboard Features
-
 
 #### Overview Page
 
@@ -440,14 +448,6 @@ Utilizes bar charts and tables for easy interpretation of performance metrics by
 
 - Mountain and Road product lines lead overall performance, contributing significantly to total profit.
 
-### Tools & Technologies
-
-- Power BI – Data modeling, visualization, DAX calculations
-
-- Data Modeling Approach: Star Schema
-
-- DAX Functions Used: SUMX, DIVIDE, DISTINCTCOUNT, RELATED
-
 ### Business Impact
 
 **This dashboard enables data-driven decision-making by:**
@@ -464,7 +464,15 @@ The Sales Performance Analysis Dashboard offers a clear, interactive, and visual
 
 By integrating dynamic filters and KPI visuals, decision-makers can easily analyze performance, discover trends, and make informed strategic choices.
 
+## 👥 Contributors
 
+### 🧑‍💻 Data Engineer  
+**Name:** Oyekanmi Lekan  
+**LinkedIn:** [https://www.linkedin.com/in/olamilekan-oyekanmi/](https://www.linkedin.com/in/olamilekan-oyekanmi/)
+
+### 📊 Data Analyst  
+**Name:** Bolaji Bello  
+**LinkedIn:** [https://www.linkedin.com/in/bolaji-bello](https://www.linkedin.com/in/bolaji-bello-1009a932b/)
 
 ### 🛡️ License
 This project is licensed under the MIT License. You are free to use, modify, and share this project with proper attribution.
