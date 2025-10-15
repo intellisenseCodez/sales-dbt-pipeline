@@ -366,6 +366,104 @@ After loading the raw ERP and CRM datasets into the **Bronze layer**, the next s
 ✅ **Result:**  
 The **Staging layer** now contains clean, consistent, and standardized versions of CRM and ERP data, making it easier to integrate into the **Integration (Silver) layer** and build business-ready fact and dimension tables in the **Gold layer**.
 
+## 📊 Sales Performance Analysis Report
+### Project Overview
+
+The Sales Performance Analysis Dashboard was developed using Power BI to provide a comprehensive view of sales activities and customer insights.
+
+The goal of this report is to enable management to monitor performance, evaluate profit trends, and identify business growth opportunities across different product categories and regions.
+
+### Data Model Design
+
+![Modeling](./docs/Bi_Modeling.jpg)
+
+The data model follows a Star Schema structure consisting of:
+
+**Fact Table**: FCT_SALES – contains key measurable metrics such as Sales_Amount, Quantity, Product_Key, and Customer_Key.
+
+### Dimension Tables:
+
+**DIM_PRODUCT** – defines product attributes including Category, Product_Line, and Product_Name.
+
+**DIM_CUSTOMER** – stores customer details such as Gender, Marital Status, Country, and Customer_ID.
+
+Relationships were established using Product_Key and Customer_Key, ensuring an optimized model for efficient aggregation and filtering.
+
+### Key Metrics and DAX Measures
+
+The following KPIs were created using DAX:
+
+**Total Sales**: SUM(FCT_SALES[Sales_Amount])
+
+**Total Quantity**: SUM(FCT_SALES[Quantity])
+
+**Total Unit Price**: DIVIDE([Total Sales], [Total Quantity])
+
+**Total Customers**: DISTINCTCOUNT(DIM_CUSTOMER[Customer_ID])
+
+**Profit**: [Total Sales] - SUM(DIM_PRODUCT[Product_Cost])
+
+**Profit Margin (%)**: DIVIDE([Profit], [Total Sales], 0)
+
+These measures help management understand overall business performance and profitability.
+
+### Dashboard Features
+
+
+#### Overview Page
+
+![Overview](./docs/Overview_dB.jpg)
+
+Displays key KPIs such as Total Sales ($29.69M), Total Quantity (70.79K), Total Unit Price (419.53), and Total Customers (670).
+
+Includes a Sales Trend chart showing performance over time (2010–2014).
+
+Integrates a 3D Map visualization highlighting regional sales distribution across the United States, Australia, the United Kingdom, and Germany.
+
+#### Analysis Page
+
+![Analysis](./docs/Analysis_dB.jpg)
+
+Provides detailed insight into sales by Product Category and Customer Demographics (Gender and Marital Status).
+
+Features Profit and Profit Margin visualizations for quick comparison of high- and low-performing products.
+
+Utilizes bar charts and tables for easy interpretation of performance metrics by product type (Bikes, Accessories, Clothing).
+
+#### Insights
+
+- Bikes generated the highest sales revenue and profit margin compared to other categories.
+
+- Married customers accounted for a slightly higher portion of total revenue ($15.37M) compared to single customers ($14.32M).
+
+- The United States and Australia remain the top-performing regions by total sales volume.
+
+- Mountain and Road product lines lead overall performance, contributing significantly to total profit.
+
+### Tools & Technologies
+
+- Power BI – Data modeling, visualization, DAX calculations
+
+- Data Modeling Approach: Star Schema
+
+- DAX Functions Used: SUMX, DIVIDE, DISTINCTCOUNT, RELATED
+
+### Business Impact
+
+**This dashboard enables data-driven decision-making by:**
+
+- Reducing reporting time and improving insight accuracy.
+
+- Helping stakeholders quickly identify top-performing regions and products.
+
+- Enhancing profitability tracking through automated KPI monitoring.
+
+### Conclusion
+
+The Sales Performance Analysis Dashboard offers a clear, interactive, and visually compelling overview of key business metrics.
+
+By integrating dynamic filters and KPI visuals, decision-makers can easily analyze performance, discover trends, and make informed strategic choices.
+
 
 
 ### 🛡️ License
