@@ -467,12 +467,21 @@ By integrating dynamic filters and KPI visuals, decision-makers can easily analy
 ## 👥 Contributors
 
 ### 🧑‍💻 Data Engineer  
-**Name:** Oyekanmi Lekan  
-**LinkedIn:** [https://www.linkedin.com/in/olamilekan-oyekanmi/](https://www.linkedin.com/in/olamilekan-oyekanmi/)
+**Oyekanmi Lekan**
+
+Data Engineer | Data Scientist | DataOps
+
+[LinkedIn](https://www.linkedin.com/in/olamilekan-oyekanmi/) | [GitHub](https://github.com/intellisenseCodez)
 
 ### 📊 Data Analyst  
-**Name:** Bolaji Bello  
-**LinkedIn:** [https://www.linkedin.com/in/bolaji-bello](https://www.linkedin.com/in/bolaji-bello-1009a932b/)
+**Bello Bolaji**
+
+Data Analyst | BI Specia | DataOps
+
+[LinkedIN](https://www.linkedin.com/in/bolaji-bello-1009a932b/) | [GitHub](https://github.com/Bolaji1410)
+
+
+
 
 ### 🛡️ License
 This project is licensed under the MIT License. You are free to use, modify, and share this project with proper attribution.
